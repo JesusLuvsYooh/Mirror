@@ -11,6 +11,15 @@ namespace Mirror.Weaver.Tests
         }
 
         [Test]
+        public void WeaverCanUseTypesFromSameAssembly()
+        {
+            BuildAndWeaveTestAssembly("NetworkBehaviourUsingSameAssembly");
+
+            Assert.That(CompilationFinishedHook.WeaveFailed, Is.False);
+            Assert.That(weaverErrors, Is.Empty);
+        }
+
+        [Test]
         public void WeaverCanUseTypesFromDifferentAssemblies()
         {
             BuildAndWeaveTestAssembly("NetworkBehaviourUsingAnotherAssembly");
