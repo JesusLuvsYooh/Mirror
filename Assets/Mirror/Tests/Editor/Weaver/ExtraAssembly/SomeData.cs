@@ -1,4 +1,7 @@
-public struct SomeData
+namespace Mirror.Weaver.Tests.Extra
 {
-    public int usefulNumber;
+    public struct SomeData
+    {
+        public int usefulNumber;
+    }
 }

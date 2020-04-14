@@ -1,10 +1,14 @@
 using Mirror;
+using Mirror.Weaver.Tests.Extra;
 
-public class NetworkBehaviourUsingAnotherAssembly : NetworkBehaviour
+namespace MirrorTest
 {
-    [ClientRpc]
-    public void RpcDoSomething(SomeData data)
+    public class NetworkBehaviourUsingAnotherAssembly : NetworkBehaviour
     {
+        [ClientRpc]
+        public void RpcDoSomething(SomeData data)
+        {
 
+        }
     }
 }
