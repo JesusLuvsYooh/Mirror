@@ -20,6 +20,15 @@ namespace Mirror.Weaver.Tests
         }
 
         [Test]
+        [Ignore("Not Implemented")]
+        public void WeaverDoesSomethingUnityTypes()
+        {
+            // Need to decide if scriptableObjects are allowed
+            // eg RpcDoSomething(DataScriptableObject data)
+        }
+
+
+        [Test]
         public void WeaverCanUseTypesFromDifferentAssemblies()
         {
             BuildAndWeaveTestAssembly("NetworkBehaviourUsingAnotherAssembly");
