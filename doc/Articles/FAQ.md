@@ -124,7 +124,7 @@ Simple Matchmaker
 - You can make matchmakers out of these list servers, simply hide the list to players, have them auto join a game with space. You could also filter out various requirements the player has set, for example, "USA" Region only, or "Lava Island" map.
     </details>
     
-### How to get the player count?
+### How to get player count?
 
 <details>
   <summary>There are a few ways to do this, each with their own unique benefit.</summary>
@@ -133,7 +133,62 @@ NetworkServer.connections.Count
 - Socket connections, includes people without spawned prefabs, non authenticated, or that may have bugged out but during spawn, but have connected temporarily (Android users minimising game).  Only host / server can check this.
 
 NetworkManager.singleton.numPlayers
-- Number of active spawned player objects on the server (only the host / server can check this)
+- Number of active spawned player objects across all connections on the server.
+Only host / server can check this, below is an example of how to sync this number to all players.
+
+Create a PlayerCounter.cs script, and add:
+```cs
+public class PlayerCounter : NetworkBehaviour
+{
+    [SyncVar(hook = nameof(OnNumPlayersChanged))]
+    public int currentNumOfPlayers;
+
+    // This fires on client when value changes
+    void OnNumPlayersChanged(int oldValue, int newValue)
+    {
+        // Put this in a UI
+        Debug.Log(newValue);
+    }
+}
+```
+
+Create a NewNetworkManager.cs, to replace the default NetworkManager and add:
+```cs
+public class NewNetworkManager : NetworkManager
+{
+    // Assign in inspector by dragging scene object
+    // with PlayerCounter script to this field.
+    public PlayerCounter playerCounter;
+
+    public override void OnServerAddPlayer(NetworkConnection conn)
+    {
+        base.OnServerAddPlayer(conn);
+        playerCounter.currentNumOfPlayers = numPlayers;
+    }
+
+    public override void OnServerDisconnect(NetworkConnection conn)
+    {
+        base.OnServerDisconnect(conn);
+        playerCounter.currentNumOfPlayers = numPlayers;
+    }
+}
+```
+
+Find by Player tag to array.
+- Is a good way to distinguish between states, by applying the gameobjects tag for certain situtations, example states 'not ready', 'is dead', 'spectator'.
+```cs
+public class PlayerCounterExample : MonoBehaviour
+{
+    public Text canvasPlayerCount;
+    public GameObject[] playersArray;
+
+    public void ButtonFindPlayers()
+    {
+       playersArray = GameObject.FindGameObjectsWithTag("Player");
+       canvasPlayerCount.text = "Players: " + playersArray.Length;
+    }
+}
+```
 </details>
 
 ### Changing Transports
