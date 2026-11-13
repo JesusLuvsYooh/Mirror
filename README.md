@@ -344,7 +344,7 @@ Please reach out if you decide to use Mirror.
 We are excited to hear about your project, and happy to help if needed!
 
 ---
-# Incident Response & Bug Bounty
+# Incident Response & Bug Reports
 A lot of projects use Mirror in production. If you found a critical bug / exploit in Mirror core, please follow the steps outlined in our [Security Policy](SECURITY.md).
 
 **Credits / past findings / fixes:**
