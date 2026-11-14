@@ -94,6 +94,14 @@ namespace Mirror.Weaver
                     // [SyncVar]?
                     if (field.HasCustomAttribute<SyncVarAttribute>())
                     {
+                        // support SyncVars in generic components like Comp<T>: NetworkBehaviour
+                        // https://github.com/MirrorNetworking/Mirror/pull/4093/
+                        if (field.Module == md.Module)
+                        {
+                            ProcessSetInstruction(syncVarAccessLists, md, instr, field);
+                            return iCount;
+                        }
+
                         // ILPostProcessor would need to Process() the assembly's
                         // references before processing this one.
                         // we can not control the order.
